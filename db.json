@@ -1,0 +1,97 @@
+{
+  "users": [
+    {
+      "id": "u1",
+      "name": "Rajesh Kumar",
+      "username": "citizen1",
+      "password": "pass123",
+      "role": "citizen",
+      "aadhar": "123456789012",
+      "mobile": "9876543210",
+      "email": "rajesh@email.com",
+      "dept": null
+    },
+    {
+      "id": "u2",
+      "name": "Priya Sharma",
+      "username": "depthead1",
+      "password": "dept123",
+      "role": "department_head",
+      "aadhar": "234567890123",
+      "mobile": "9876543211",
+      "email": "priya@gov.in",
+      "dept": "Revenue"
+    },
+    {
+      "id": "u3",
+      "name": "Admin Singh",
+      "username": "admin1",
+      "password": "admin123",
+      "role": "admin",
+      "aadhar": "345678901234",
+      "mobile": "9000000001",
+      "email": "admin@seva.gov.in",
+      "dept": null
+    },
+    {
+      "id": "u1777793577265",
+      "name": "Avinesh",
+      "username": "avin",
+      "password": "123456",
+      "role": "citizen",
+      "aadhar": "909264999912",
+      "mobile": "9092649999",
+      "email": "aviavinesh1785@gmail.com",
+      "dept": null
+    }
+  ],
+  "applications": [
+    {
+      "id": "APP-2024-001",
+      "userId": "u1",
+      "userName": "Rajesh Kumar",
+      "service": "Birth Certificate",
+      "dept": "Revenue",
+      "date": "2024-11-01",
+      "status": "approved",
+      "remark": "Verified and approved."
+    },
+    {
+      "id": "APP-2024-002",
+      "userId": "u1",
+      "userName": "Rajesh Kumar",
+      "service": "Income Certificate",
+      "dept": "Revenue",
+      "date": "2024-11-05",
+      "status": "pending",
+      "remark": ""
+    },
+    {
+      "id": "APP-2024-003",
+      "userId": "u1",
+      "userName": "Rajesh Kumar",
+      "service": "Domicile Certificate",
+      "dept": "Revenue",
+      "date": "2024-11-10",
+      "status": "processing",
+      "remark": "Under verification."
+    }
+  ],
+  "complaints": [
+    {
+      "id": "CMP-001",
+      "userId": "u1",
+      "dept": "Municipal Corporation",
+      "category": "Infrastructure issue",
+      "subject": "Road pothole near main market",
+      "desc": "Large pothole causing accidents.",
+      "status": "open",
+      "date": "2024-11-08"
+    }
+  ],
+  "attempts": {
+    "citizen1": 0,
+    "admin1": 0,
+    "909264999912": 1
+  }
+}
