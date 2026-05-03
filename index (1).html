@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEVA Portal – Digital Public Service Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ══════════════ AUTH PAGE ══════════════ -->
+<div id="auth-page" class="page">
+  <div class="auth-orb orb1"></div>
+  <div class="auth-orb orb2"></div>
+
+  <div class="auth-container">
+    <!-- Left branding panel -->
+    <div class="auth-left">
+      <div class="auth-brand">
+        <div class="auth-logo">🏛️</div>
+        <div class="auth-title">SEVA <span>Portal</span></div>
+        <div class="auth-subtitle">Digital Public Service Platform — secure, fast, and accessible government services for every citizen.</div>
+      </div>
+      <div class="auth-features">
+        <div class="auth-feat"><div class="feat-icon">🔐</div>Aadhar-verified secure identity</div>
+        <div class="auth-feat"><div class="feat-icon">📋</div>Apply for certificates online</div>
+        <div class="auth-feat"><div class="feat-icon">📡</div>Real-time application tracking</div>
+        <div class="auth-feat"><div class="feat-icon">🤝</div>Raise and resolve complaints</div>
+        <div class="auth-feat"><div class="feat-icon">📊</div>Department-level analytics</div>
+        <div class="auth-feat"><div class="feat-icon">🛡️</div>Role-based access control</div>
+      </div>
+      <div style="font-size:11px; color:var(--text-muted);">Government of India — Ministry of Digital Services</div>
+    </div>
+
+    <!-- Right form panel -->
+    <div class="auth-right">
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'Sora',sans-serif; font-size:22px; font-weight:700;">Welcome</div>
+        <div style="font-size:13px; color:var(--text-secondary); margin-top:4px;">Sign in or create your account</div>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- ── LOGIN FORM ── -->
+      <div id="login-form">
+        <div id="login-alert" class="form-alert"></div>
+
+        <div class="form-group">
+          <label class="form-label">Username or Aadhar Number</label>
+          <div class="input-group">
+            <span class="input-icon">👤</span>
+            <input type="text" id="login-id" class="form-input" placeholder="Enter username or 12-digit Aadhar">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="login-pwd" class="form-input" placeholder="Enter your password">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Your Role</label>
+          <select id="login-role" class="form-select">
+            <option value="">Select role</option>
+            <option value="citizen">👤 Citizen</option>
+            <option value="department_head">🏢 Department Head</option>
+            <option value="admin">🏛️ Admin</option>
+          </select>
+        </div>
+
+        <div class="attempts-warning" id="attempts-warn">
+          ⚠️ <span id="attempts-left">3</span> login attempts remaining
+        </div>
+
+        <div style="margin-top:20px;">
+          <button class="btn btn-primary" onclick="doLogin()">Sign In to SEVA Portal</button>
+        </div>
+
+        <div style="text-align:center; margin-top:14px; font-size:12px; color:var(--text-muted);">
+          Demo: <span style="color:var(--accent2);">citizen1 / pass123 / citizen</span>
+          &nbsp;|&nbsp;
+          <span style="color:var(--gold2);">admin1 / admin123 / admin</span>
+        </div>
+      </div>
+
+      <!-- ── REGISTER FORM ── -->
+      <div id="register-form" class="hidden">
+        <div id="reg-alert" class="form-alert"></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="reg-name" class="form-input" placeholder="Your full name">
+            <div class="error-msg" id="err-name">Please enter your full name</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Username</label>
+            <input type="text" id="reg-username" class="form-input" placeholder="Choose a username">
+            <div class="error-msg" id="err-username">Username already taken</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Aadhar Number</label>
+          <div class="input-group">
+            <span class="input-icon">🪪</span>
+            <input type="text" id="reg-aadhar" class="form-input" placeholder="12-digit Aadhar number" maxlength="12">
+          </div>
+          <div class="error-msg" id="err-aadhar">Enter a valid 12-digit Aadhar number</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Mobile Number</label>
+            <input type="text" id="reg-mobile" class="form-input" placeholder="10-digit mobile" maxlength="10">
+            <div class="error-msg" id="err-mobile">Enter valid mobile number</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email (optional)</label>
+            <input type="email" id="reg-email" class="form-input" placeholder="you@email.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Role</label>
+          <select id="reg-role" class="form-select">
+            <option value="">Select role</option>
+            <option value="citizen">👤 Citizen</option>
+            <option value="department_head">🏢 Department Head</option>
+          </select>
+          <div class="error-msg" id="err-role">Please select a role</div>
+        </div>
+
+        <div id="dept-select-wrap" class="form-group hidden">
+          <label class="form-label">Assigned Department</label>
+          <select id="reg-dept" class="form-select">
+            <option value="">Select department</option>
+            <option value="Revenue">Revenue Department</option>
+            <option value="Health">Health &amp; Family Welfare</option>
+            <option value="Education">Education Department</option>
+            <option value="Transport">Transport Department</option>
+            <option value="Municipal">Municipal Corporation</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" id="reg-pwd" class="form-input" placeholder="Min 6 characters">
+            <div class="error-msg" id="err-pwd">Password too short</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" id="reg-pwd2" class="form-input" placeholder="Repeat password">
+            <div class="error-msg" id="err-pwd2">Passwords do not match</div>
+          </div>
+        </div>
+
+        <!-- OTP Section -->
+        <div class="otp-section" id="otp-section">
+          <div style="background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.2); border-radius:10px; padding:14px; margin-bottom:14px;">
+            <div style="font-size:13px; font-weight:500; margin-bottom:4px;">📲 OTP sent to your mobile</div>
+            <div style="font-size:12px; color:var(--text-secondary);">
+              Enter the 6-digit code.
+              <span style="color:var(--accent2); cursor:pointer;" onclick="generateOtp()">Resend OTP</span>
+            </div>
+            <div class="otp-inputs">
+              <input type="text" class="otp-digit" maxlength="1" oninput="otpMove(this,0)">
+              <input type="text" class="otp-digit" maxlength="1" oninput="otpMove(this,1)">
+              <input type="text" class="otp-digit" maxlength="1" oninput="otpMove(this,2)">
+              <input type="text" class="otp-digit" maxlength="1" oninput="otpMove(this,3)">
+              <input type="text" class="otp-digit" maxlength="1" oninput="otpMove(this,4)">
+              <input type="text" class="otp-digit" maxlength="1" oninput="otpMove(this,5)">
+            </div>
+            <div style="font-size:11px; color:var(--text-muted);" id="otp-hint"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:6px;">
+          <button class="btn btn-primary" id="reg-btn" onclick="doRegister()">Send OTP &amp; Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ APP PAGE ══════════════ -->
+<div id="app-page" class="page">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-inner">
+        <div class="logo-box">🏛️</div>
+        <div>
+          <div class="logo-text">SEVA <span>Portal</span></div>
+          <div style="font-size:10px; color:var(--text-muted);">Digital Services</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Citizen nav -->
+    <div id="nav-citizen" class="hidden">
+      <div class="nav-section-label">Citizen Services</div>
+      <div class="nav-item active" onclick="showSection('dashboard')"><span class="nav-icon">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="showSection('services')"><span class="nav-icon">📋</span> Apply for Services</div>
+      <div class="nav-item" onclick="showSection('myapps')">
+        <span class="nav-icon">📁</span> My Applications
+        <span class="nav-badge" id="badge-apps">3</span>
+      </div>
+      <div class="nav-item" onclick="showSection('complaints')"><span class="nav-icon">📢</span> Complaints</div>
+      <div class="nav-item" onclick="showSection('track')"><span class="nav-icon">🔍</span> Track Status</div>
+      <div class="nav-item" onclick="showSection('idcard')"><span class="nav-icon">🪪</span> Digital ID Card</div>
+    </div>
+
+    <!-- Department Head nav -->
+    <div id="nav-dept" class="hidden">
+      <div class="nav-section-label">Department</div>
+      <div class="nav-item active" onclick="showSection('dashboard')"><span class="nav-icon">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="showSection('deptapps')">
+        <span class="nav-icon">📋</span> Pending Applications
+        <span class="nav-badge" id="badge-dept">5</span>
+      </div>
+      <div class="nav-item" onclick="showSection('deptcomplaints')"><span class="nav-icon">📢</span> Department Complaints</div>
+    </div>
+
+    <!-- Admin nav -->
+    <div id="nav-admin" class="hidden">
+      <div class="nav-section-label">Administration</div>
+      <div class="nav-item active" onclick="showSection('dashboard')"><span class="nav-icon">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="showSection('allapps')"><span class="nav-icon">📋</span> All Applications</div>
+      <div class="nav-item" onclick="showSection('allusers')"><span class="nav-icon">👥</span> User Management</div>
+      <div class="nav-item" onclick="showSection('analytics')"><span class="nav-icon">📈</span> Analytics</div>
+      <div class="nav-item" onclick="showSection('assignments')"><span class="nav-icon">🔀</span> Assign Work</div>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebar-avatar">U</div>
+      <div>
+        <div class="user-name" id="sidebar-name">User</div>
+        <div class="user-role" id="sidebar-role">Role</div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()" title="Logout">⬅️</button>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="main-content">
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="page-title">Dashboard</div>
+        <div class="page-subtitle" id="page-subtitle">Welcome back</div>
+      </div>
+      <div class="topbar-actions">
+        <div class="icon-btn" title="Notifications" onclick="showToast('2 new notifications','info')">🔔</div>
+        <div class="icon-btn" title="Help">❓</div>
+        <div class="icon-btn" onclick="showSection('idcard')" title="My Profile">👤</div>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD ── -->
+    <div class="section-page active" id="sec-dashboard">
+
+      <!-- Citizen stats -->
+      <div id="citizen-stats" class="hidden">
+        <div class="stats-grid">
+          <div class="stat-card blue">
+            <div class="stat-icon">📋</div>
+            <div class="stat-label">Applications</div>
+            <div class="stat-value" id="cit-apps">0</div>
+            <div class="stat-change">This month</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-icon">✅</div>
+            <div class="stat-label">Approved</div>
+            <div class="stat-value" id="cit-approved">0</div>
+            <div class="stat-change up">↑ Good standing</div>
+          </div>
+          <div class="stat-card gold">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-label">Pending</div>
+            <div class="stat-value" id="cit-pending">0</div>
+            <div class="stat-change">In review</div>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-icon">📢</div>
+            <div class="stat-label">Complaints</div>
+            <div class="stat-value" id="cit-complaints">0</div>
+            <div class="stat-change">Raised</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin/Dept stats -->
+      <div id="admin-stats" class="hidden">
+        <div class="stats-grid">
+          <div class="stat-card blue">
+            <div class="stat-icon">👥</div>
+            <div class="stat-label">Total Citizens</div>
+            <div class="stat-value" id="adm-citizens">0</div>
+            <div class="stat-change up">↑ Growing</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-icon">📋</div>
+            <div class="stat-label">Applications</div>
+            <div class="stat-value" id="adm-apps">0</div>
+            <div class="stat-change">Total processed</div>
+          </div>
+          <div class="stat-card gold">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-label">Pending</div>
+            <div class="stat-value" id="adm-pending">0</div>
+            <div class="stat-change down">↓ Needs attention</div>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-icon">🏢</div>
+            <div class="stat-label">Departments</div>
+            <div class="stat-value">5</div>
+            <div class="stat-change">Active</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-grid grid-3" style="margin-top:20px;">
+        <!-- Recent activity timeline -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Recent Activity</div>
+            <button class="panel-action" onclick="showSection('myapps')">View all →</button>
+          </div>
+          <div id="recent-activity">
+            <div class="timeline-item">
+              <div class="tl-dot blue">📋</div>
+              <div class="tl-content">
+                <div class="tl-title">Birth Certificate applied</div>
+                <div class="tl-meta">2 days ago · Revenue Dept</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="tl-dot green">✅</div>
+              <div class="tl-content">
+                <div class="tl-title">Income Certificate approved</div>
+                <div class="tl-meta">5 days ago · Revenue Dept</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="tl-dot gold">📢</div>
+              <div class="tl-content">
+                <div class="tl-title">Road repair complaint raised</div>
+                <div class="tl-meta">1 week ago · Municipal Corp</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service overview bars + mini chart -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Service Overview</div>
+          </div>
+          <div class="analytics-bar-row">
+            <div class="bar-label">Certificates</div>
+            <div class="bar-track"><div class="bar-fill" style="width:72%;background:var(--accent);"></div></div>
+            <div class="bar-value" style="color:var(--accent2);">72%</div>
+          </div>
+          <div class="analytics-bar-row">
+            <div class="bar-label">Complaints</div>
+            <div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--gold);"></div></div>
+            <div class="bar-value" style="color:var(--gold2);">45%</div>
+          </div>
+          <div class="analytics-bar-row">
+            <div class="bar-label">Licenses</div>
+            <div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--green);"></div></div>
+            <div class="bar-value" style="color:var(--green2);">58%</div>
+          </div>
+          <div class="analytics-bar-row">
+            <div class="bar-label">Welfare</div>
+            <div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--purple);"></div></div>
+            <div class="bar-value" style="color:var(--purple2);">30%</div>
+          </div>
+          <div style="margin-top:16px;">
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">Monthly Application Volume</div>
+            <div class="mini-chart">
+              <div class="chart-bar" style="height:40%"></div>
+              <div class="chart-bar" style="height:60%"></div>
+              <div class="chart-bar" style="height:50%"></div>
+              <div class="chart-bar" style="height:80%"></div>
+              <div class="chart-bar" style="height:65%"></div>
+              <div class="chart-bar" style="height:90%"></div>
+              <div class="chart-bar" style="height:75%;background:rgba(59,130,246,0.5)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Department quick-access tiles -->
+      <div class="panel" style="margin-top:20px;" id="dept-quick-access">
+        <div class="panel-header">
+          <div class="panel-title">Government Departments</div>
+          <button class="panel-action" onclick="showSection('services')">Apply for service →</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
+          <div class="dept-card" onclick="showSection('services')"><div class="dept-icon">💼</div><div class="dept-name">Revenue</div><div class="dept-count">12 services</div></div>
+          <div class="dept-card" onclick="showSection('services')"><div class="dept-icon">🏥</div><div class="dept-name">Health</div><div class="dept-count">8 services</div></div>
+          <div class="dept-card" onclick="showSection('services')"><div class="dept-icon">🎓</div><div class="dept-name">Education</div><div class="dept-count">10 services</div></div>
+          <div class="dept-card" onclick="showSection('services')"><div class="dept-icon">🚗</div><div class="dept-name">Transport</div><div class="dept-count">6 services</div></div>
+          <div class="dept-card" onclick="showSection('services')"><div class="dept-icon">🏙️</div><div class="dept-name">Municipal</div><div class="dept-count">9 services</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SERVICES ── -->
+    <div class="section-page" id="sec-services">
+      <div class="search-bar">
+        <span>🔍</span>
+        <input type="text" placeholder="Search services..." oninput="filterServices(this.value)">
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;" id="services-grid"></div>
+    </div>
+
+    <!-- ── MY APPLICATIONS ── -->
+    <div class="section-page" id="sec-myapps">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">My Applications</div>
+          <button class="panel-action" onclick="showSection('services')">+ New Application</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>App ID</th><th>Service</th><th>Department</th><th>Date</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="my-apps-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── COMPLAINTS ── -->
+    <div class="section-page" id="sec-complaints">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">Raise a Complaint</div></div>
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <select id="comp-dept" class="form-select">
+              <option value="">Select department</option>
+              <option>Revenue Department</option>
+              <option>Health &amp; Family Welfare</option>
+              <option>Education Department</option>
+              <option>Transport Department</option>
+              <option>Municipal Corporation</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select id="comp-cat" class="form-select">
+              <option value="">Select category</option>
+              <option>Delay in service</option>
+              <option>Incorrect information</option>
+              <option>Staff behaviour</option>
+              <option>Infrastructure issue</option>
+              <option>Corruption/bribery</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <input type="text" id="comp-subject" class="form-input" placeholder="Brief subject line">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea id="comp-desc" class="form-input" rows="4" style="resize:vertical;" placeholder="Describe your complaint in detail..."></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="submitComplaint()">Submit Complaint</button>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">My Complaints</div></div>
+          <div id="my-complaints-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TRACK STATUS ── -->
+    <div class="section-page" id="sec-track">
+      <div class="panel" style="max-width:600px;margin:0 auto;">
+        <div class="panel-header"><div class="panel-title">Track Application Status</div></div>
+        <div class="form-group">
+          <label class="form-label">Application ID</label>
+          <div style="display:flex;gap:10px;">
+            <input type="text" id="track-id" class="form-input" placeholder="e.g. APP-2024-001">
+            <button class="btn btn-primary" style="width:auto;padding:11px 22px;" onclick="trackApp()">Track</button>
+          </div>
+        </div>
+        <div id="track-result" class="hidden">
+          <div style="border-top:1px solid var(--border);padding-top:20px;margin-top:20px;">
+            <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;" id="track-info"></div>
+            <div style="display:flex;align-items:flex-start;gap:0;" id="track-steps"></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px;" id="track-labels"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DIGITAL ID CARD ── -->
+    <div class="section-page" id="sec-idcard">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+        <div>
+          <div class="panel-title" style="margin-bottom:16px;">Digital Citizen ID</div>
+          <div class="id-card">
+            <div class="id-card-title">Government of India · SEVA Portal</div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-top:16px;">
+              <div>
+                <div class="id-card-name" id="id-name">Citizen Name</div>
+                <div class="id-card-field" id="id-role-display">Role: Citizen</div>
+                <div class="id-card-field" id="id-mobile">Mobile: —</div>
+                <div class="id-card-field" id="id-email">Email: —</div>
+              </div>
+              <div style="width:64px;height:64px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;" id="id-avatar">U</div>
+            </div>
+            <div class="id-card-aadhar" id="id-aadhar">XXXX XXXX XXXX</div>
+            <div class="id-card-bar"></div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;">
+              <div style="font-size:10px;color:var(--text-muted);">Valid Citizen ID</div>
+              <div style="font-size:10px;color:var(--accent2);">🔒 Verified</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title" style="margin-bottom:16px;">Account Details</div>
+          <div id="profile-details"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ALL APPLICATIONS (Admin) ── -->
+    <div class="section-page" id="sec-allapps">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">All Applications</div>
+          <select class="form-select" style="width:auto;" onchange="filterAllApps(this.value)">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+            <option value="processing">Processing</option>
+          </select>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>App ID</th><th>Citizen</th><th>Service</th><th>Department</th><th>Date</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="all-apps-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── USER MANAGEMENT (Admin) ── -->
+    <div class="section-page" id="sec-allusers">
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">User Management</div></div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Name</th><th>Username</th><th>Aadhar</th><th>Role</th><th>Department</th><th>Status</th></tr>
+          </thead>
+          <tbody id="all-users-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── ANALYTICS (Admin) ── -->
+    <div class="section-page" id="sec-analytics">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="panel">
+          <div class="panel-title" style="margin-bottom:16px;">Applications by Department</div>
+          <div id="analytics-depts"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title" style="margin-bottom:16px;">Status Distribution</div>
+          <div id="analytics-status"></div>
+        </div>
+        <div class="panel" style="grid-column:1/-1;">
+          <div class="panel-title" style="margin-bottom:16px;">Service Usage Overview</div>
+          <div style="display:flex;align-items:flex-end;gap:8px;height:120px;" id="analytics-chart"></div>
+          <div style="display:flex;gap:8px;margin-top:8px;font-size:11px;color:var(--text-muted);" id="analytics-labels"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DEPARTMENT APPLICATIONS (Dept Head) ── -->
+    <div class="section-page" id="sec-deptapps">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title" id="dept-apps-title">Department Applications</div>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>App ID</th><th>Citizen Name</th><th>Service</th><th>Date</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="dept-apps-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── DEPT COMPLAINTS (Dept Head) ── -->
+    <div class="section-page" id="sec-deptcomplaints">
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Department Complaints</div></div>
+        <div id="dept-complaints-list"></div>
+      </div>
+    </div>
+
+    <!-- ── ASSIGNMENTS (Admin) ── -->
+    <div class="section-page" id="sec-assignments">
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Assign Applications to Departments</div></div>
+        <div id="assignment-list"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── Apply Service Modal ── -->
+<div class="modal-overlay" id="apply-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Apply for Service</div>
+      <button class="modal-close" onclick="closeModal('apply-modal')">✕</button>
+    </div>
+    <div id="modal-service-name" style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;"></div>
+    <div class="form-group">
+      <label class="form-label">Full Name (as per records)</label>
+      <input type="text" id="apply-name" class="form-input" placeholder="Your legal full name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Purpose / Reason</label>
+      <textarea id="apply-purpose" class="form-input" rows="3" placeholder="State the purpose of this application..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Supporting Note (optional)</label>
+      <input type="text" id="apply-note" class="form-input" placeholder="Any additional information">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button class="btn btn-primary" onclick="submitApplication()">Submit Application</button>
+      <button class="btn" style="background:var(--bg-card2);border:1px solid var(--border);color:var(--text-primary);" onclick="closeModal('apply-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Update Status Modal (Admin/Dept) ── -->
+<div class="modal-overlay" id="status-modal">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <div class="modal-title">Update Application Status</div>
+      <button class="modal-close" onclick="closeModal('status-modal')">✕</button>
+    </div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;" id="status-app-info"></div>
+    <div class="form-group">
+      <label class="form-label">New Status</label>
+      <select id="new-status" class="form-select">
+        <option value="processing">Processing</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Remarks</label>
+      <textarea id="status-remark" class="form-input" rows="3" placeholder="Official remarks..."></textarea>
+    </div>
+    <button class="btn btn-primary" onclick="updateStatus()">Update Status</button>
+  </div>
+</div>
+
+<!-- ── Toast notification ── -->
+<div class="toast" id="toast">
+  <span id="toast-icon">✅</span>
+  <span id="toast-msg">Action completed</span>
+</div>
+
+<!-- Scripts: data layer first, then UI layer -->
+<script src="backend.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
